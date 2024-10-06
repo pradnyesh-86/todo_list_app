@@ -64,7 +64,6 @@ class HomeScreen extends StatelessWidget {
                       },
                     ),
 
-                    // Delete button (already exists)
                     IconButton(
                       icon: Icon(Icons.delete),
                       onPressed: () {
