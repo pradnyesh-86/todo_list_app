@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../viewmodels/task_controller.dart';
-import 'task_search_delegate.dart'; // Import the new delegate
+import 'task_search_delegate.dart';
+import 'AddEditTaskScreen.dart';
 
 class HomeScreen extends StatelessWidget {
   final TaskController taskController = Get.put(TaskController());
@@ -43,7 +44,8 @@ class HomeScreen extends StatelessWidget {
                   },
                 ),
                 onTap: () {
-                  // Navigate to task details/edit page
+                  Get.to(() =>
+                      AddEditTaskScreen(task: task)); // Navigate to edit screen
                 },
               );
             },
@@ -53,7 +55,7 @@ class HomeScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          // Navigate to Add Task Screen
+          Get.to(() => AddEditTaskScreen()); // Navigate to Add Task Screen
         },
       ),
     );

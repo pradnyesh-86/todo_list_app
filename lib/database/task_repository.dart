@@ -41,4 +41,22 @@ class TaskRepository {
     final db = await _getDatabase();
     await db.delete('tasks', where: 'id = ?', whereArgs: [id]);
   }
+
+  static Task copyWith(
+    Task task, {
+    String? title,
+    String? description,
+    DateTime? dueDate,
+    String? priority,
+    bool? isCompleted,
+  }) {
+    return Task(
+      id: task.id, // Keep the existing ID
+      title: title ?? task.title,
+      description: description ?? task.description,
+      dueDate: dueDate ?? task.dueDate,
+      priority: priority ?? task.priority,
+      isCompleted: isCompleted ?? task.isCompleted,
+    );
+  }
 }

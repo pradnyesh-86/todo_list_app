@@ -37,4 +37,23 @@ class Task {
       isCompleted: map['isCompleted'] == 1,
     );
   }
+
+  // Define the copyWith method
+  Task copyWith({
+    int? id,
+    String? title,
+    String? description,
+    DateTime? dueDate,
+    String? priority,
+    bool? isCompleted,
+  }) {
+    return Task(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      dueDate: dueDate ?? this.dueDate,
+      priority: priority ?? this.priority,
+      isCompleted: isCompleted ?? this.isCompleted,
+    );
+  }
 }
