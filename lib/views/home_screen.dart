@@ -18,9 +18,14 @@ class HomeScreen extends StatelessWidget {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate:
-                    TaskSearchDelegate(), // Use the new TaskSearchDelegate
+                delegate: TaskSearchDelegate(), // Task search delegate
               );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.sort),
+            onPressed: () {
+              taskController.sortTasksByPriority(); // Sort tasks by priority
             },
           ),
         ],
@@ -34,18 +39,45 @@ class HomeScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               final task = taskController.taskList[index];
               return ListTile(
-                title: Text(task.title),
+                title: Text(
+                  task.title,
+                  style: TextStyle(
+                    decoration: task.isCompleted
+                        ? TextDecoration.lineThrough
+                        : TextDecoration
+                            .none, // Strike-through for completed tasks
+                  ),
+                ),
                 subtitle:
                     Text('Due: ${task.dueDate} - Priority: ${task.priority}'),
-                trailing: IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () {
-                    taskController.deleteTask(task.id!);
-                  },
+
+                // Trailing Widget with Checkbox for task completion and Delete Button
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Checkbox for task completion
+                    Checkbox(
+                      value: task.isCompleted,
+                      onChanged: (newValue) {
+                        taskController.toggleTaskCompletion(
+                            task); // Mark task as completed/incomplete
+                      },
+                    ),
+
+                    // Delete button (already exists)
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        taskController.deleteTask(task.id!);
+                      },
+                    ),
+                  ],
                 ),
                 onTap: () {
                   Get.to(() =>
                       AddEditTaskScreen(task: task)); // Navigate to edit screen
+
+                  // Navigate to task details/edit page if needed
                 },
               );
             },

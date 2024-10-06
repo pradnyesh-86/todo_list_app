@@ -34,6 +34,12 @@ class TaskController extends GetxController {
     loadTasks();
   }
 
+  void toggleTaskCompletion(Task task) {
+    task.isCompleted = !task.isCompleted; // Toggle completion status
+    TaskRepository.updateTask(task); // Update task in the repository
+    taskList.refresh(); // Refresh task list to update UI
+  }
+
   List<Task> searchTasks(String query) {
     return taskList.where((task) => task.title.contains(query)).toList();
   }
