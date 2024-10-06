@@ -11,7 +11,7 @@ class TaskRepository {
       join(await getDatabasesPath(), 'task_database.db'),
       onCreate: (db, version) {
         return db.execute(
-          "CREATE TABLE tasks(id INTEGER PRIMARY KEY, title TEXT, description TEXT, dueDate TEXT, priority TEXT, isCompleted INTEGER)",
+          "CREATE TABLE tasks(id INTEGER PRIMARY KEY, title TEXT, description TEXT, dueDate TEXT, priority TEXT, isCompleted INTEGER, createdAt TEXT)",
         );
       },
       version: 1,
