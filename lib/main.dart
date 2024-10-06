@@ -11,7 +11,7 @@ void main() async {
   tz.initializeTimeZones();
 
   // Initialize the notification service
-  await NotificationService.initialize();
+  await NotificationService().initNotification(); // Initialize notifications
 
   runApp(MyApp());
 }

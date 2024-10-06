@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import '../models/task.dart';
 import '../database/task_repository.dart'; // Database logic
+import '../services/notification_service.dart'; // Import Notification Service
 
 class TaskController extends GetxController {
   var taskList = <Task>[].obs; // Observable list
@@ -11,6 +12,7 @@ class TaskController extends GetxController {
   void onInit() {
     super.onInit();
     loadTasks();
+    NotificationService().initNotification(); // Initialize notifications
   }
 
   void loadTasks() async {
@@ -23,16 +25,21 @@ class TaskController extends GetxController {
 
   void addTask(Task task) async {
     await TaskRepository.insertTask(task);
+    scheduleNotificationForTask(task); // Schedule notification
     loadTasks();
   }
 
   void deleteTask(int id) async {
     await TaskRepository.deleteTask(id);
+    NotificationService()
+        .cancelNotification(id); // Cancel notification on delete
     loadTasks();
   }
 
   void updateTask(Task task) async {
     await TaskRepository.updateTask(task);
+    scheduleNotificationForTask(
+        task); // Update notification for the updated task
     loadTasks();
   }
 
@@ -40,6 +47,13 @@ class TaskController extends GetxController {
     task.isCompleted = !task.isCompleted; // Toggle completion status
     TaskRepository.updateTask(task); // Update task in the repository
     taskList.refresh(); // Refresh task list to update UI
+
+    if (task.isCompleted) {
+      NotificationService()
+          .cancelNotification(task.id!); // Cancel notification if completed
+    } else {
+      scheduleNotificationForTask(task); // Reschedule if marked incomplete
+    }
   }
 
   List<Task> searchTasks(String query) {
@@ -72,5 +86,23 @@ class TaskController extends GetxController {
   void sortTasksByCreatedAt() {
     taskList.sort((a, b) => (a.id ?? 0)
         .compareTo(b.id ?? 0)); // Use id as a proxy for creation date
+  }
+
+  // Schedule a notification for a task
+  void scheduleNotificationForTask(Task task) {
+    if (!task.isCompleted) {
+      // Schedule notification if task is not completed
+      try {
+        NotificationService().scheduleNotification(
+          task.id!,
+          "Task Reminder",
+          task.title,
+          task.dueDate, // Schedule the notification at task's due date
+        );
+      } catch (e) {
+        // Handle potential errors when scheduling notifications
+        print('Failed to schedule notification: $e');
+      }
+    }
   }
 }
