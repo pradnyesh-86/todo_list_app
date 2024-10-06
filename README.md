@@ -1,7 +1,3 @@
-Here's a detailed **README** file for your Flutter ToDo List App, covering everything from setup to functionality:
-
----
-
 # Flutter ToDo List App
 
 A simple and user-friendly ToDo List app built with **Flutter**. This app allows users to create, manage, and prioritize tasks. You can set task reminders and due dates, sort tasks by priority or creation date, and receive notifications for upcoming tasks. 
